@@ -20,6 +20,30 @@ vec4 GetVolumetricLight(inout float vlFactor, vec3 translucentMult, float lViewP
             vlColor *= 1.0 + 0.6 * inDry * rainFactor;
         #endif
 
+        #ifdef SPECIAL_BIOME_EFFECTS
+            vec3 biomeVLColor = vec3(1.0) + (
+                inCherryGrove     * vec3(0.02,  0.00,  0.04)
+              + inForest          * vec3(-0.01,  0.01,  0.00)
+              + inDappledForest   * vec3(0.03,  0.01, -0.02)
+              + inJungle          * vec3(0.00,  0.02, -0.01)
+              + inSwamp           * vec3(-0.01,  0.00, -0.03)
+              + inDesert          * vec3(0.05,  0.01, -0.04)
+              + inBadlands        * vec3(0.06,  0.00, -0.05)
+              + inSavanna         * vec3(0.03,  0.01, -0.03)
+              + inPlains          * vec3(0.01,  0.00, -0.01)
+              + inTaiga           * vec3(-0.02,  0.01,  0.02)
+              + inSnowyLand       * vec3(-0.03,  0.00,  0.04)
+              + inMountains       * vec3(-0.02,  0.00,  0.03)
+              + inMushroom        * vec3(0.01, -0.01,  0.04)
+              + inOcean           * vec3(-0.01,  0.00,  0.02)
+              + inDripstoneCaves  * vec3(0.01,  0.00, -0.01)
+              + inLushCaves       * vec3(0.00,  0.02,  0.00)
+              + inDeepDark        * vec3(-0.02, -0.02,  0.01)
+              + inSulfurCaves     * vec3(0.03,  0.02, -0.03)
+            );
+            vlColor *= biomeVLColor;
+        #endif
+
         if (sunVisibility < 0.5) {
             vlSceneIntensity = 0.0;
             

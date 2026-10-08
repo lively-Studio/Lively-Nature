@@ -16,6 +16,31 @@
         #else
             vec3 nmscSnowM = vec3(0.0), nmscDryM = vec3(0.0), ndscSnowM = vec3(0.0), ndscDryM = vec3(0.0);
         #endif
+        #ifdef SPECIAL_BIOME_EFFECTS
+            float bseCaveFactor = 1.0 - isEyeInCave;
+            vec3 biomeSkyOffset = bseCaveFactor * (
+                inCherryGrove     * vec3(0.04, -0.01, 0.08)
+              + inForest          * vec3(-0.02, 0.03, -0.01)
+              + inDappledForest   * vec3(0.06, 0.02, -0.04)
+              + inJungle          * vec3(0.01, 0.04, -0.03)
+              + inSwamp           * vec3(-0.02, 0.01, -0.05)
+              + inDesert          * vec3(0.08, 0.03, -0.08)
+              + inBadlands        * vec3(0.10, 0.01, -0.10)
+              + inSavanna         * vec3(0.06, 0.02, -0.06)
+              + inPlains          * vec3(0.02, 0.01, -0.02)
+              + inTaiga           * vec3(-0.03, 0.01, 0.04)
+              + inSnowyLand       * vec3(-0.05, 0.01, 0.08)
+              + inMountains       * vec3(-0.03, 0.00, 0.06)
+              + inMushroom        * vec3(0.03, -0.03, 0.08)
+              + inOcean           * vec3(-0.02, 0.00, 0.05)
+              + inDripstoneCaves  * vec3(0.02, 0.00, -0.02)
+              + inLushCaves       * vec3(-0.01, 0.04, -0.01)
+              + inDeepDark        * vec3(-0.03, -0.03, 0.02)
+              + inSulfurCaves     * vec3(0.05, 0.03, -0.05)
+            );
+            skyColorM += biomeSkyOffset;
+            skyColorM2 += biomeSkyOffset;
+        #endif
         #if RAIN_STYLE == 2
             vec3 nmscRainMP = vec3(-0.15, 0.025, 0.1);
             vec3 ndscRainMP = vec3(-0.125, -0.005, 0.125);

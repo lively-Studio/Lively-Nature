@@ -74,7 +74,18 @@
     void DoCaveFog(inout vec4 color, float lViewPos) {
         float fog = GetCaveFactor() * (0.9 - 0.9 * exp(- lViewPos * 0.015));
 
-        color = mix(color, vec4(caveFogColor, 0.0), fog);
+        vec3 caveFogColorM = caveFogColor;
+        #ifdef SPECIAL_BIOME_EFFECTS
+            vec3 caveFogOffset = (
+                inDripstoneCaves * vec3(0.02,  0.01, -0.02)
+              + inLushCaves      * vec3(-0.01,  0.03,  0.00)
+              + inDeepDark       * vec3(-0.02, -0.02,  0.02)
+              + inSulfurCaves    * vec3(0.04,  0.03, -0.03)
+            );
+            caveFogColorM += caveFogOffset;
+        #endif
+
+        color = mix(color, vec4(caveFogColorM, 0.0), fog);
     }
 #endif
 
@@ -183,6 +194,30 @@
 
             #ifdef OVERWORLD
                 vec3 fogColorM = GetAtmFogColor(altitudeFactorRaw, VdotS);
+
+                #ifdef SPECIAL_BIOME_EFFECTS
+                    vec3 biomeFogOffset = (
+                        inCherryGrove     * vec3(0.02,  0.00,  0.04)
+                      + inForest          * vec3(-0.01,  0.02,  0.00)
+                      + inDappledForest   * vec3(0.03,  0.01, -0.02)
+                      + inJungle          * vec3(0.00,  0.02, -0.01)
+                      + inSwamp           * vec3(-0.01,  0.01, -0.03)
+                      + inDesert          * vec3(0.04,  0.01, -0.04)
+                      + inBadlands        * vec3(0.05,  0.00, -0.05)
+                      + inSavanna         * vec3(0.03,  0.01, -0.03)
+                      + inPlains          * vec3(0.01,  0.00, -0.01)
+                      + inTaiga           * vec3(-0.02,  0.01,  0.02)
+                      + inSnowyLand       * vec3(-0.03,  0.00,  0.04)
+                      + inMountains       * vec3(-0.02,  0.00,  0.03)
+                      + inMushroom        * vec3(0.01, -0.01,  0.04)
+                      + inOcean           * vec3(-0.01,  0.00,  0.02)
+                      + inDripstoneCaves  * vec3(0.01,  0.00, -0.01)
+                      + inLushCaves       * vec3(0.00,  0.02,  0.00)
+                      + inDeepDark        * vec3(-0.02, -0.02,  0.01)
+                      + inSulfurCaves     * vec3(0.03,  0.02, -0.03)
+                    );
+                    fogColorM += biomeFogOffset;
+                #endif
             #else
                 vec3 fogColorM = endSkyColor * 1.5;
             #endif
