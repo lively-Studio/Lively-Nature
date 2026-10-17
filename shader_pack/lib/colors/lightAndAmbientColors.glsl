@@ -74,33 +74,30 @@
         vec3 rainLightColor   = mix(nightRainLightColor, dayRainLightColor * (1.0 - rainShadowVisReduce), sunVisibility2) * 2.5;
         vec3 rainAmbientColor = mix(nightRainAmbientColor, dayRainAmbientColor * (1.0 + rainShadowVisReduce), sunVisibility2);
 
-        vec3 lightColor   = mix(clearLightColor, rainLightColor, rainFactor);
-        vec3 ambientColor = mix(clearAmbientColor, rainAmbientColor, rainFactor);
-
         #ifdef SPECIAL_BIOME_EFFECTS
-            vec3 biomeLightOffset = (
-                inCherryGrove     * vec3(0.03,  0.01,  0.05)
-              + inForest          * vec3(-0.02,  0.02, -0.01)
-              + inDappledForest   * vec3(0.04,  0.01, -0.03)
-              + inJungle          * vec3(0.01,  0.03, -0.02)
-              + inSwamp           * vec3(-0.01,  0.01, -0.04)
-              + inDesert          * vec3(0.06,  0.02, -0.06)
-              + inBadlands        * vec3(0.08,  0.01, -0.08)
-              + inSavanna         * vec3(0.04,  0.01, -0.04)
-              + inPlains          * vec3(0.01,  0.01, -0.01)
-              + inTaiga           * vec3(-0.02,  0.01,  0.03)
-              + inSnowyLand       * vec3(-0.04,  0.01,  0.06)
-              + inMountains       * vec3(-0.02,  0.00,  0.04)
-              + inMushroom        * vec3(0.02, -0.02,  0.06)
-              + inOcean           * vec3(-0.01,  0.00,  0.03)
-              + inDripstoneCaves  * vec3(0.01,  0.00, -0.01)
-              + inLushCaves       * vec3(-0.01,  0.03, -0.01)
-              + inDeepDark        * vec3(-0.02, -0.02,  0.01)
-              + inSulfurCaves     * vec3(0.04,  0.02, -0.04)
-            );
-            lightColor   = lightColor + biomeLightOffset;
-            ambientColor = ambientColor + biomeLightOffset * 0.5;
+            vec3 biomeLightOffset = inCherryGrove * vec3(0.03, 0.01, 0.05)
+                                  + inForest * vec3(-0.02, 0.02, -0.01)
+                                  + inDappledForest * vec3(0.04, 0.01, -0.03)
+                                  + inJungle * vec3(0.01, 0.03, -0.02)
+                                  + inSwamp * vec3(-0.01, 0.01, -0.04)
+                                  + inDesert * vec3(0.06, 0.02, -0.06)
+                                  + inBadlands * vec3(0.08, 0.01, -0.08)
+                                  + inSavanna * vec3(0.04, 0.01, -0.04)
+                                  + inPlains * vec3(0.01, 0.01, -0.01)
+                                  + inTaiga * vec3(-0.02, 0.01, 0.03)
+                                  + inSnowyLand * vec3(-0.04, 0.01, 0.06)
+                                  + inMountains * vec3(-0.02, 0.00, 0.04)
+                                  + inMushroom * vec3(0.02, -0.02, 0.06)
+                                  + inOcean * vec3(-0.01, 0.00, 0.03)
+                                  + inDripstoneCaves * vec3(0.01, 0.00, -0.01)
+                                  + inLushCaves * vec3(-0.01, 0.03, -0.01)
+                                  + inDeepDark * vec3(-0.02, -0.02, 0.01)
+                                  + inSulfurCaves * vec3(0.04, 0.02, -0.04);
+        #else
+            vec3 biomeLightOffset = vec3(0.0);
         #endif
+        vec3 lightColor   = mix(clearLightColor, rainLightColor, rainFactor) + biomeLightOffset;
+        vec3 ambientColor = mix(clearAmbientColor, rainAmbientColor, rainFactor) + biomeLightOffset * 0.5;
     #elif defined NETHER
         vec3 lightColor   = vec3(0.0);
         vec3 ambientColor = (netherColor + 0.5 * lavaLightColor) * (0.9 + 0.45 * vsBrightness);

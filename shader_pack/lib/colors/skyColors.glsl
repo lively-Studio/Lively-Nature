@@ -5,8 +5,30 @@
         vec3 skyColorSqrt = sqrt(skyColor);
         // Doing these things because vanilla skyColor gets to 0 during a thunderstorm
         float invRainStrength2 = (1.0 - rainStrength) * (1.0 - rainStrength);
-        vec3 skyColorM = mix(max(skyColorSqrt, vec3(0.63, 0.67, 0.73)), skyColorSqrt, invRainStrength2);
-        vec3 skyColorM2 = mix(max(skyColor, sunFactor * vec3(0.265, 0.295, 0.35)), skyColor, invRainStrength2);
+        #ifdef SPECIAL_BIOME_EFFECTS
+            vec3 biomeSkyOffset = (1.0 - isEyeInCave) * (inCherryGrove * vec3(0.04, -0.01, 0.08)
+                                + inForest * vec3(-0.02, 0.03, -0.01)
+                                + inDappledForest * vec3(0.06, 0.02, -0.04)
+                                + inJungle * vec3(0.01, 0.04, -0.03)
+                                + inSwamp * vec3(-0.02, 0.01, -0.05)
+                                + inDesert * vec3(0.08, 0.03, -0.08)
+                                + inBadlands * vec3(0.10, 0.01, -0.10)
+                                + inSavanna * vec3(0.06, 0.02, -0.06)
+                                + inPlains * vec3(0.02, 0.01, -0.02)
+                                + inTaiga * vec3(-0.03, 0.01, 0.04)
+                                + inSnowyLand * vec3(-0.05, 0.01, 0.08)
+                                + inMountains * vec3(-0.03, 0.00, 0.06)
+                                + inMushroom * vec3(0.03, -0.03, 0.08)
+                                + inOcean * vec3(-0.02, 0.00, 0.05)
+                                + inDripstoneCaves * vec3(0.02, 0.00, -0.02)
+                                + inLushCaves * vec3(-0.01, 0.04, -0.01)
+                                + inDeepDark * vec3(-0.03, -0.03, 0.02)
+                                + inSulfurCaves * vec3(0.05, 0.03, -0.05));
+        #else
+            vec3 biomeSkyOffset = vec3(0.0);
+        #endif
+        vec3 skyColorM = mix(max(skyColorSqrt, vec3(0.63, 0.67, 0.73)), skyColorSqrt, invRainStrength2) + biomeSkyOffset;
+        vec3 skyColorM2 = mix(max(skyColor, sunFactor * vec3(0.265, 0.295, 0.35)), skyColor, invRainStrength2) + biomeSkyOffset;
 
         #ifdef SPECIAL_BIOME_WEATHER
             vec3 nmscSnowM = inSnowy * vec3(-0.1, 0.3, 0.6);
@@ -15,31 +37,6 @@
             vec3 ndscDryM = inDry * vec3(-0.05, -0.09, -0.1);
         #else
             vec3 nmscSnowM = vec3(0.0), nmscDryM = vec3(0.0), ndscSnowM = vec3(0.0), ndscDryM = vec3(0.0);
-        #endif
-        #ifdef SPECIAL_BIOME_EFFECTS
-            float bseCaveFactor = 1.0 - isEyeInCave;
-            vec3 biomeSkyOffset = bseCaveFactor * (
-                inCherryGrove     * vec3(0.04, -0.01, 0.08)
-              + inForest          * vec3(-0.02, 0.03, -0.01)
-              + inDappledForest   * vec3(0.06, 0.02, -0.04)
-              + inJungle          * vec3(0.01, 0.04, -0.03)
-              + inSwamp           * vec3(-0.02, 0.01, -0.05)
-              + inDesert          * vec3(0.08, 0.03, -0.08)
-              + inBadlands        * vec3(0.10, 0.01, -0.10)
-              + inSavanna         * vec3(0.06, 0.02, -0.06)
-              + inPlains          * vec3(0.02, 0.01, -0.02)
-              + inTaiga           * vec3(-0.03, 0.01, 0.04)
-              + inSnowyLand       * vec3(-0.05, 0.01, 0.08)
-              + inMountains       * vec3(-0.03, 0.00, 0.06)
-              + inMushroom        * vec3(0.03, -0.03, 0.08)
-              + inOcean           * vec3(-0.02, 0.00, 0.05)
-              + inDripstoneCaves  * vec3(0.02, 0.00, -0.02)
-              + inLushCaves       * vec3(-0.01, 0.04, -0.01)
-              + inDeepDark        * vec3(-0.03, -0.03, 0.02)
-              + inSulfurCaves     * vec3(0.05, 0.03, -0.05)
-            );
-            skyColorM += biomeSkyOffset;
-            skyColorM2 += biomeSkyOffset;
         #endif
         #if RAIN_STYLE == 2
             vec3 nmscRainMP = vec3(-0.15, 0.025, 0.1);

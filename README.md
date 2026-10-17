@@ -6,7 +6,7 @@
 
 ## 项目简介
 
-**Lively-Nature** 是一套基于 Complementary Reimagined r5 代码架构，面向自然风格视觉体验的 Minecraft Java 版光影。
+**Lively-Nature** 是一套参考 Complementary Reimagined r5，面向自然风格视觉体验的 Minecraft Java 版光影。
 
 设计理念：
 
@@ -115,7 +115,7 @@ Lively-Nature/
 
 ## 许可
 
-GNU General Public License v3.0 · [github.com/Open-code-Studio](https://github.com/Open-code-Studio)
+GNU General Public License v3.0 · [github.com/lively-Studio](https://github.com/lively-Studio/Lively-Nature)
 
 ---
 
